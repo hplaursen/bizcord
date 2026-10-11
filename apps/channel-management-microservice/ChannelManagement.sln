@@ -1,0 +1,45 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{1787FE1D-075E-9E68-7218-25F1BD1BBEAB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "channel-management-microservice", "channel-management-microservice", "{6A419475-E2D4-6060-32D3-2977242919D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC07DA30-F445-1F70-A358-73ECA1D75512}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChannelManagement", "src\ChannelManagement.csproj", "{8655EBCD-16DF-4203-9843-58E65060C0EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Debug|x64.Build.0 = Debug|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Debug|x86.Build.0 = Debug|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Release|x64.ActiveCfg = Release|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Release|x64.Build.0 = Release|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Release|x86.ActiveCfg = Release|Any CPU
+		{8655EBCD-16DF-4203-9843-58E65060C0EB}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6A419475-E2D4-6060-32D3-2977242919D6} = {1787FE1D-075E-9E68-7218-25F1BD1BBEAB}
+		{FC07DA30-F445-1F70-A358-73ECA1D75512} = {6A419475-E2D4-6060-32D3-2977242919D6}
+		{8655EBCD-16DF-4203-9843-58E65060C0EB} = {FC07DA30-F445-1F70-A358-73ECA1D75512}
+	EndGlobalSection
+EndGlobal
