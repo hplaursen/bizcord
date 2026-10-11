@@ -3,13 +3,13 @@ namespace ChannelManagement.Infrastructure;
 
 public class MessageSubscriber : BackgroundService
 {
-
     private readonly IMessageClient _messageClient;
 
     public MessageSubscriber(IMessageClient messageClient)
     {
         _messageClient = messageClient;
     }
+
     private Task HandleMessageAsync(string message)
     {
         Console.WriteLine($"Received: {message}");

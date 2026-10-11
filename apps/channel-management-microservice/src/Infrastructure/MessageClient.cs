@@ -14,7 +14,6 @@ public class MessageClient : IMessageClient
 
     public async Task SubscribeAsync(Func<string, Task> handler)
     {
-
         await _bus.PubSub.SubscribeAsync<string>("channel-management", handler);
                          Console.WriteLine($"Subscriber is starting.. channel-management test");
     }
