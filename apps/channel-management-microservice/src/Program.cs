@@ -1,10 +1,10 @@
-using ChannelManagement;
+using ChannelManagement.Infrastructure;
 using EasyNetQ;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-builder.Services.AddEasyNetQ("host=localhost");
+builder.Services.AddEasyNetQ("host=localhost;port=5673");
 builder.Services.AddSingleton<IMessageClient, MessageClient>();
 builder.Services.AddHostedService<MessageSubscriber>();
 var app = builder.Build();
