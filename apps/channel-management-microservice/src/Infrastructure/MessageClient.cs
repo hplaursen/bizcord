@@ -1,5 +1,6 @@
 
 using EasyNetQ;
+using ChannelManagement.Contracts;
 
 namespace ChannelManagement.Infrastructure;
 
@@ -18,9 +19,19 @@ public class MessageClient : IMessageClient
                          Console.WriteLine($"Subscriber is starting.. channel-management test");
     }
 
+    public async Task SubscribeToMessagesAsync(Func<MessagePostedEvent, CancellationToken, Task> handler, CancellationToken cancellationToken)
+    {
+        await _bus.PubSub.SubscribeAsync<MessagePostedEvent>("channel-management", message => handler(message, cancellationToken));
+    }
+
     public async Task PublishAsync(string message)
     {
         await _bus.PubSub.PublishAsync<string>(message);
+    }
+
+    public async Task PublishAsync<T>(T message) where T : class
+    {
+        await _bus.PubSub.PublishAsync(message);
     }
 
 }

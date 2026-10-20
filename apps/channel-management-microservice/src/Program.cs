@@ -10,6 +10,7 @@ var rabbitMqHost = builder.Configuration["RABBITMQ_HOST"] ?? "localhost";
 var rabbitMqPort = builder.Configuration["RABBITMQ_PORT"] ?? "5673";
 builder.Services.AddEasyNetQ($"host={rabbitMqHost};port={rabbitMqPort}");
 builder.Services.AddSingleton<IMessageClient, MessageClient>();
+builder.Services.AddSingleton<MessagePostedHandler>();
 builder.Services.AddHostedService<MessageSubscriber>();
 builder.Services.AddSingleton<IChannelRepository, ChannelRepository>();
 builder.Services.AddScoped<IChannelService, ChannelService>();
