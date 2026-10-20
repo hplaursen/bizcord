@@ -5,7 +5,7 @@ namespace ChannelManagement.Services
 {
     public class ChannelService(IChannelRepository repository) : IChannelService
     {
-        public Task<Channel?> GetChannelByIdAsync(int channelId) {
+        public Task<Channel?> GetChannelByIdAsync(Guid channelId) {
            return Task.FromResult(repository.GetById(channelId));
         }
 
@@ -18,7 +18,7 @@ namespace ChannelManagement.Services
             return Task.FromResult(createdChannel);
         }
 
-        public Task<Channel?> UpdateChannelAsync(int channelId, Channel channel) {
+        public Task<Channel?> UpdateChannelAsync(Guid channelId, Channel channel) {
             Channel? existingChannel = GetChannelByIdAsync(channelId).Result;
             if (existingChannel == null)
                 return Task.FromResult<Channel?>(null);
@@ -28,7 +28,7 @@ namespace ChannelManagement.Services
             return Task.FromResult<Channel?>(channel);
         }
 
-        public Task<bool> DeleteChannelAsync(int channelId) {
+        public Task<bool> DeleteChannelAsync(Guid channelId) {
             Channel? existingChannel = repository.GetById(channelId);
             if (existingChannel == null)
                 return Task.FromResult(false);

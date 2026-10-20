@@ -4,10 +4,10 @@ namespace ChannelManagement.Services
 {
     public interface IChannelService
     {
-        Task<Channel?> GetChannelByIdAsync(int channelId);
+        Task<Channel?> GetChannelByIdAsync(Guid channelId);
         Task<IEnumerable<Channel>> GetAllChannelsAsync();
         Task<Channel> CreateChannelAsync(Channel channel);
-        Task<Channel?> UpdateChannelAsync(int channelId, Channel channel);
-        Task<bool> DeleteChannelAsync(int channelId);
+        Task<Channel?> UpdateChannelAsync(Guid channelId, Channel channel);
+        Task<bool> DeleteChannelAsync(Guid channelId);
     }
 }

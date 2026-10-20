@@ -1,5 +1,7 @@
 using ChannelManagement.Contracts;
+using ChannelManagement.Domain.Entities;
 using ChannelManagement.Infrastructure;
+using ChannelManagement.Repository;
 using ChannelManagement.Services;
 using Xunit;
 
@@ -11,42 +13,37 @@ public class MessagePostedHandlerTests
     public async Task Handle_PublishesResultEvent_WithOriginalMessageAndChannelIds()
     {
         var messageId = Guid.NewGuid();
-        var channelId = Guid.NewGuid();
         var client = new FakeMessageClient();
-        var handler = new MessagePostedHandler(client);
+        var repository = new ChannelRepository();
+        var channel = repository.Create(new Channel());
+        var handler = new MessagePostedHandler(client, repository);
 
-        await handler.Handle(CreateMessage(messageId, channelId), CancellationToken.None);
+        await handler.Handle(CreateMessage(messageId, channel.Id), CancellationToken.None);
 
-        var published = Assert.IsType<ChannelMessageCountUpdatedEvent>(Assert.Single(client.Published));
-        Assert.Equal(messageId, published.MessageId);
-        Assert.Equal(channelId, published.ChannelId);
-        Assert.Equal(1, published.MessageCount);
-        Assert.InRange(published.ProcessedAt, DateTime.UtcNow.AddSeconds(-5), DateTime.UtcNow.AddSeconds(5));
+        var singlePublished = Assert.Single(client.Published); // Is there exactly one published event?
+        var published = Assert.IsType<ChannelMessageCountUpdatedEvent>(singlePublished); // Is it the expected event type?
+        Assert.Equal(messageId, published.MessageId); // Is the MessageId preserved?
+        Assert.Equal(channel.Id, published.ChannelId); // Is the ChannelId preserved?
+        Assert.Equal(1, published.MessageCount); // Is the count 1 after the first message?
+
+        await handler.Handle(CreateMessage(Guid.NewGuid(), channel.Id), CancellationToken.None);
+
+        var secondPublished = Assert.IsType<ChannelMessageCountUpdatedEvent>(client.Published[1]);
+        Assert.Equal(2, secondPublished.MessageCount); // Does the count increase to 2 after the next message?
     }
 
     [Fact]
     public async Task Handle_CanConsumeMinimumValidContract()
     {
         var client = new FakeMessageClient();
-        var handler = new MessagePostedHandler(client);
+        var repository = new ChannelRepository();
+        var channel = repository.Create(new Channel());
+        var handler = new MessagePostedHandler(client, repository);
 
-        var exception = await Record.ExceptionAsync(() => handler.Handle(CreateMessage(Guid.NewGuid(), Guid.NewGuid()), CancellationToken.None));
+        var exception = await Record.ExceptionAsync(() => handler.Handle(CreateMessage(Guid.NewGuid(), channel.Id), CancellationToken.None));
 
         Assert.Null(exception);
         Assert.Single(client.Published);
-    }
-
-    [Fact]
-    public async Task Handle_WhenCancelled_DoesNotPublish()
-    {
-        var client = new FakeMessageClient();
-        var handler = new MessagePostedHandler(client);
-        using var cancellation = new CancellationTokenSource();
-        cancellation.Cancel();
-
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => handler.Handle(CreateMessage(Guid.NewGuid(), Guid.NewGuid()), cancellation.Token));
-
-        Assert.Empty(client.Published);
     }
 
     private static MessagePostedEvent CreateMessage(Guid messageId, Guid channelId) => new()

@@ -5,8 +5,9 @@ namespace ChannelManagement.Repository;
 public interface IChannelRepository
 {
     IEnumerable<Channel> GetAll();
-    Channel? GetById(int id);
+    Channel? GetById(Guid id);
     Channel Create(Channel channel);
+    int? IncrementMessageCount(Guid channelId);
     void Update(Channel channel);
     void Delete(Channel channel);
 }

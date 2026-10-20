@@ -1,23 +1,18 @@
 
 using ChannelManagement.Services;
+using ChannelManagement.Contracts;
 
 namespace ChannelManagement.Infrastructure;
 
 public class MessageSubscriber : BackgroundService
 {
     private readonly IMessageClient _messageClient;
-    private readonly MessagePostedHandler _messagePostedHandler;
+    private readonly IMessageHandler<MessagePostedEvent> _messagePostedHandler;
 
-    public MessageSubscriber(IMessageClient messageClient, MessagePostedHandler messagePostedHandler)
+    public MessageSubscriber(IMessageClient messageClient, IMessageHandler<MessagePostedEvent> messagePostedHandler)
     {
         _messageClient = messageClient;
         _messagePostedHandler = messagePostedHandler;
-    }
-
-    private Task HandleMessageAsync(string message)
-    {
-        Console.WriteLine($"Received: {message}");
-        return Task.CompletedTask;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

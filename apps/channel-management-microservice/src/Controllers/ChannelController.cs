@@ -11,7 +11,7 @@ public class ChannelController(IChannelService channelService) : ControllerBase
 {
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetChannelById(int id)
+    public async Task<IActionResult> GetChannelById(Guid id)
     {
         Channel? channel = 
             await channelService.GetChannelByIdAsync(id);
@@ -44,7 +44,7 @@ public class ChannelController(IChannelService channelService) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateChannel(int id, [FromBody] ChannelDto channelDto)
+    public async Task<IActionResult> UpdateChannel(Guid id, [FromBody] ChannelDto channelDto)
     {
         if (!ModelState.IsValid)
         {
@@ -60,7 +60,7 @@ public class ChannelController(IChannelService channelService) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteChannel(int id)
+    public async Task<IActionResult> DeleteChannel(Guid id)
     {
         var result = await channelService.DeleteChannelAsync(id);
         if (!result)

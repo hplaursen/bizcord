@@ -1,6 +1,6 @@
-namespace ChannelManagement.Infrastructure;
-
 using ChannelManagement.Contracts;
+
+namespace ChannelManagement.Infrastructure;
 
 public interface IMessageClient
 {

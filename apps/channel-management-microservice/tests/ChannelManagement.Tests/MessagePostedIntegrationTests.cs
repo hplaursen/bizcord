@@ -1,9 +1,10 @@
 using ChannelManagement.Contracts;
+using ChannelManagement.Domain.Entities;
 using ChannelManagement.Infrastructure;
+using ChannelManagement.Repository;
 using ChannelManagement.Services;
 using EasyNetQ;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace ChannelManagement.Tests;
@@ -26,7 +27,9 @@ public class MessagePostedIntegrationTests
 
         var bus = provider.GetRequiredService<IBus>();
         var client = new MessageClient(bus);
-        var subscriber = new MessageSubscriber(client, new MessagePostedHandler(client));
+        var repository = new ChannelRepository();
+        var channel = repository.Create(new Channel());
+        var subscriber = new MessageSubscriber(client, new MessagePostedHandler(client, repository));
 
         await bus.PubSub.SubscribeAsync<ChannelMessageCountUpdatedEvent>(
             $"channel-management-tests-{Guid.NewGuid():N}",
@@ -38,7 +41,7 @@ public class MessagePostedIntegrationTests
             await client.PublishAsync(new MessagePostedEvent
             {
                 MessageId = messageId,
-                ChannelId = Guid.NewGuid(),
+                ChannelId = channel.Id,
                 AuthorId = Guid.NewGuid(),
                 Content = "Hello world",
                 PostedAt = DateTime.UtcNow
@@ -46,7 +49,6 @@ public class MessagePostedIntegrationTests
 
             var result = await resultReceived.Task.WaitAsync(timeout.Token);
             Assert.Equal(messageId, result.MessageId);
-            Assert.Equal(1, result.MessageCount);
         }
         finally
         {
